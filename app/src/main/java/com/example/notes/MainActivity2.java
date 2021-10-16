@@ -93,6 +93,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         if(item.getItemId() == R.id.addNote){
             Intent intent = new Intent(this,MainActivity3.class);
+            intent.putExtra("noteid",-1);
             startActivity(intent);
             return true;
         }
