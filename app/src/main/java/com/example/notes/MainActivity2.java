@@ -13,10 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity2 extends AppCompatActivity {
 
     private TextView welcome;
     String userKey = "username";
+    public static ArrayList<Note> notes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,11 @@ public class MainActivity2 extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes",Context.MODE_PRIVATE);
             sharedPreferences.edit().remove(MainActivity.userKey).apply();
+            startActivity(intent);
+            return true;
+        }
+        if(item.getItemId() == R.id.addNote){
+            Intent intent = new Intent(this,MainActivity3.class);
             startActivity(intent);
             return true;
         }
