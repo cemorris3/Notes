@@ -1,8 +1,11 @@
 package com.example.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 public class MainActivity2 extends AppCompatActivity {
 
     private TextView welcome;
+    String userKey = "username";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +24,10 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         welcome = findViewById(R.id.welcome);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+//        Intent intent = getIntent();
+//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
+        String message = sharedPreferences.getString(userKey,"");
 
         runOnUiThread(new Runnable() {
             @Override
@@ -39,16 +45,16 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.logout:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.addNote:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.logout){
+            //erase username from shared preferences
+            Intent intent = new Intent(this, MainActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes",Context.MODE_PRIVATE);
+            sharedPreferences.edit().remove(MainActivity.userKey).apply();
+            startActivity(intent);
+            return true;
         }
+        return true;
     }
 }
