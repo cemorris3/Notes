@@ -34,12 +34,15 @@ public class MainActivity3 extends AppCompatActivity {
         if(noteid != -1){
             Note note = MainActivity2.notes.get(noteid);
             String noteContent = note.getContent();
+            editText.setText(noteContent);
+            /*
             runOnUiThread(new Runnable() {
+
                 @Override
                 public void run() {
                     editText.setText(noteContent);
                 }
-            });
+            });*/
         }
     }
 
@@ -54,7 +57,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
         String user = sharedPreferences.getString(userKey, "");
-        String username = "<" + user + ">";
+        String username = user;
 
         //save info to database?
         String title;

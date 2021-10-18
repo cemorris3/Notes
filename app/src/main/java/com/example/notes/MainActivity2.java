@@ -49,6 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
         DBHelper helper = new DBHelper(sqLiteDatabase);
         notes = helper.readNotes(username);
         Log.i("here", "viewing notes");
+        Log.i("user", username);
         Log.i("length", String.valueOf(notes.size()));
         ArrayList<String> displayNotes = new ArrayList<>();
         for (Note note : notes){
@@ -67,7 +68,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(),MainActivity3.class);
-                intent.putExtra("noteid",position);
+                //intent.putExtra("noteid",position);
                 startActivity(intent);
             }
         });
