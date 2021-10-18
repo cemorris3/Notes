@@ -31,16 +31,14 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         welcome = findViewById(R.id.welcome);
-//        Intent intent = getIntent();
-//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         // get welcome message
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
-        String message = sharedPreferences.getString(userKey,"");
+        String usern = sharedPreferences.getString(userKey,"");
         // display the message
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                welcome.setText("Welcome " + message + "!");
+                welcome.setText("Welcome " + usern + "!");
             }
         });
         // get SQLiteDatabase instance
@@ -48,16 +46,16 @@ public class MainActivity2 extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("notes",Context.MODE_PRIVATE,null);
 
         DBHelper helper = new DBHelper(sqLiteDatabase);
-        notes = helper.readNotes(message);
+        notes = helper.readNotes(usern);
 
         ArrayList<String> displayNotes = new ArrayList<>();
         for (Note note : notes){
-            displayNotes.add(String.format("Title:%s\nDate:%s\n", note.getTitle(),note.getDate()));
+            displayNotes.add(String.format("Title:%s\nDate:%s", note.getTitle(),note.getDate()));
         }
 
         // use listview to display them on screen
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,displayNotes);
-        ListView listView = (ListView) findViewById(R.id.noteList);
+        ListView listView = (ListView) findViewById(R.id.notesList);
         listView.setAdapter(adapter);
 
         // add onItemClickListener for ListView item, a note

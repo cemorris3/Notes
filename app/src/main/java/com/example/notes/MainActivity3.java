@@ -19,6 +19,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     int noteid = -1;
     String userKey = "username";
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity3 extends AppCompatActivity {
         Context context = getApplicationContext();
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("notes", Context.MODE_PRIVATE, null);
 
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        dbHelper = new DBHelper(sqLiteDatabase);
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
         String user = sharedPreferences.getString(userKey, "");
