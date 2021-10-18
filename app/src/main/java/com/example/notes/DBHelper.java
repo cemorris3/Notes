@@ -2,6 +2,7 @@ package com.example.notes;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -14,12 +15,13 @@ public class DBHelper {
     }
 
     public void createTable() {
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS notes " +
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS notes" +
                 "(id INTEGER PRIMARY KEY, username TEXT, date TEXT, title TEXT, content TEXT, src TEXT)");
     }
 
     public ArrayList<Note> readNotes(String username) {
         createTable();
+        Log.i("username dbhelper",username);
         Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * from notes where username like '%s'", username),null);
         int dateIndex = c.getColumnIndex("date");
         int titleIndex = c.getColumnIndex("title");
@@ -40,6 +42,7 @@ public class DBHelper {
         }
         c.close();
         sqLiteDatabase.close();
+        Log.i("length dbhelper", String.valueOf(notesList.size()));
         return notesList;
     }
 
@@ -47,6 +50,35 @@ public class DBHelper {
         createTable();
         sqLiteDatabase.execSQL(String.format("INSERT INTO notes (username, date, title, content) VALUES ('%s', '%s', '%s', '%s')",
                 username, date, title, content));
+        Log.i("note created",username);
+        Log.i("note created",date);
+        Log.i("note created",title);
+        Log.i("note created",content);
+
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * from notes where username like '%s'", username),null);
+        int dateIndex = c.getColumnIndex("date");
+        int titleIndex = c.getColumnIndex("title");
+        int contentIndex = c.getColumnIndex("content");
+
+        c.moveToFirst();
+
+        ArrayList<Note> notesList = new ArrayList<>();
+
+        while (!c.isAfterLast()){
+            String title1 = c.getString(titleIndex);
+            String date1 = c.getString(dateIndex);
+            String content1 = c.getString(contentIndex);
+            Log.i("saved note title",title1);
+            Log.i("saved note date", date1);
+            Log.i("saved note content", content1);
+            c.moveToNext();
+
+        }
+
+        c.close();
+        sqLiteDatabase.close();
+
+
     }
 
     public void updateNote(String title, String date, String content, String username){

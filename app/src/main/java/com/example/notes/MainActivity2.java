@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,23 +34,26 @@ public class MainActivity2 extends AppCompatActivity {
         welcome = findViewById(R.id.welcome);
         // get welcome message
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
-        String usern = sharedPreferences.getString(userKey,"");
-        // display the message
+        String username = sharedPreferences.getString("username","");
+        /*// display the message
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                welcome.setText("Welcome " + usern + "!");
+                welcome.setText("Welcome " + username + "!");
             }
-        });
+        });*/
         // get SQLiteDatabase instance
         Context context = getApplicationContext();
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("notes",Context.MODE_PRIVATE,null);
 
         DBHelper helper = new DBHelper(sqLiteDatabase);
-        notes = helper.readNotes(usern);
-
+        notes = helper.readNotes(username);
+        Log.i("here", "viewing notes");
+        Log.i("length", String.valueOf(notes.size()));
         ArrayList<String> displayNotes = new ArrayList<>();
         for (Note note : notes){
+            Log.i("date",note.getTitle());
+            Log.i("date",note.getDate());
             displayNotes.add(String.format("Title:%s\nDate:%s", note.getTitle(),note.getDate()));
         }
 
@@ -62,7 +66,7 @@ public class MainActivity2 extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(),Note.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity3.class);
                 intent.putExtra("noteid",position);
                 startActivity(intent);
             }
@@ -79,13 +83,12 @@ public class MainActivity2 extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        super.onOptionsItemSelected(item);
 
         if(item.getItemId() == R.id.logout){
             //erase username from shared preferences
             Intent intent = new Intent(this, MainActivity.class);
             SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes",Context.MODE_PRIVATE);
-            sharedPreferences.edit().remove(MainActivity.userKey).apply();
+            sharedPreferences.edit().remove("username").apply();
             startActivity(intent);
             return true;
         }
@@ -95,7 +98,7 @@ public class MainActivity2 extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 

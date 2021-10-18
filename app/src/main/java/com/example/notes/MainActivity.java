@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "notes.USERNAME";
-    public static String userKey;
-    private EditText name;
+    //public static String userKey;
+    //private EditText name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userKey = "username";
+        String userKey = "username";
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
         if(!sharedPreferences.getString(userKey,"").equals("")){
@@ -34,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
 
-        name = findViewById(R.id.username);
+
     }
 
     public void displayWelcome(View view){
+        EditText name = (EditText) findViewById(R.id.username);
         Intent intent = new Intent(this, MainActivity2.class);
         String user = name.getText().toString();
 
